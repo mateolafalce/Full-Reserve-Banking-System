@@ -1,0 +1,12 @@
+[features]
+seeds = false
+skip-lint = false
+[programs.devnet]
+full_reserve_banking = "9itEZxf4oDGCmYFf1ngQbXsUzhPUCvopGVtMdGHKkHz6"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "devnet"
+wallet = "/home/mateo/.config/solana/id.json"
