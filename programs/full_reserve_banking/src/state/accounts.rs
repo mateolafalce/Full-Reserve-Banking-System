@@ -18,18 +18,6 @@ impl FullReserveBankData {
 }
 
 #[account]
-pub struct IPOData {
-    pub bump_original: u8,                  // 1
-    pub bank_shareholders: Vec<Pubkey>,     // 4 + 32 (MAX == 100 SHAREHOLDERS)
-    pub day_the_shares_go_on_sale: i64,     // 8
-    pub day_the_shares_close: i64,          // 8
-}
-
-impl IPOData {
-    pub const SIZE: usize = 1 + 4 + 32 + 8 + 8;
-}
-
-#[account]
 pub struct UserData {
     pub bump_original: u8,                              // 1
     pub requested_credits: u32,                         // 4
@@ -45,12 +33,15 @@ impl UserData {
 #[account]
 pub struct CreditData {
     pub bump_original: u8,                              // 1
+    pub capital: u64,                                   // 8
     pub borrower: Pubkey,                               // 32
     pub interest_rate: u8,                              // 1
     pub period_divided_into: u8,                        // 1
     pub average_term_to_return_the_capital: i64,        // 8
+    pub historical_loans: u64,                          // 8
+    pub approved: bool,                                 // 1
 }
 
 impl CreditData {
-    pub const SIZE: usize = 1 + 32 + 1 + 1 + 8;
+    pub const SIZE: usize = 1 + 32 + 1 + 1 + 8 + 1;
 }

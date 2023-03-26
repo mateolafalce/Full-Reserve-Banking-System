@@ -8,4 +8,8 @@ pub enum ErrorCode {
     PubkeyError,
     #[msg("There was an error in the timestamp. The action is not valid. Check the start and end dates of the offer")]
     TimestampError,
+    #[msg("This account has been approved for credit so it cannot be canceled")]
+    ApprovedError,
+    #[msg("Your capital does not represent 1% of the total invested in the bank")]
+    CapitalError,
 }
