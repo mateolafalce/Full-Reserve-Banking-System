@@ -7,16 +7,16 @@ use crate::{
     errors::ErrorCode
 };
 
-pub fn give_a_credit(
-    ctx: Context<GiveACredit>,
+pub fn return_capital(
+    ctx: Context<ReturnCapital>,
 ) -> Result<()> {
     let full_reserve_bank: &mut Account<FullReserveBankData> = &mut ctx.accounts.full_reserve_bank;
     let credit_account: &mut Account<CreditData> = &mut ctx.accounts.credit;
     let user_data: &mut Account<UserData> = &mut ctx.accounts.user_data;
     require!(ctx.accounts.signer.key() == ctx.accounts.full_reserve_bank.authority.key(), ErrorCode::PubkeyError);
     require!(credit_account.approved == false, ErrorCode::ApprovedError);
-    **ctx.accounts.full_reserve_bank.to_account_info().try_borrow_mut_lamports()? -= credit_account.capital;
-    **ctx.accounts.borrower.to_account_info().try_borrow_mut_lamports()? += credit_account.capital;
+    **ctx.accounts.full_reserve_bank.to_account_info().try_borrow_mut_lamports()? -= user_data.money_amount_requested_from_banks;
+    **ctx.accounts.borrower.to_account_info().try_borrow_mut_lamports()? += user_data.money_amount_requested_from_banks;
     full_reserve_bank.current_loans += 1;
     credit_account.approved = true;
     user_data.requested_credits += 1;
@@ -25,7 +25,7 @@ pub fn give_a_credit(
 }
 
 #[derive(Accounts)]
-pub struct GiveACredit<'info> {
+pub struct ReturnCapital<'info> {
     /// CHECK: This is not dangerous
     #[account(mut)]
     pub borrower: AccountInfo<'info>,
